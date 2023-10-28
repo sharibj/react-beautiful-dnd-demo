@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
@@ -17,6 +17,7 @@ const initialItems = [
 
 const App = () => {
     const [items, setItems] = useState(initialItems);
+    const containerRef = useRef(null);
 
     const onDragEnd = (result) => {
         if (!result.destination) {
@@ -35,12 +36,33 @@ const App = () => {
         items.forEach((item) => console.log(item.content));
     };
 
+    const handleAddItem = () => {
+        const newItemId = `item-${items.length + 1}`;
+        const newItemContent = `Item ${items.length + 1}`;
+        const newItems = [...items, { id: newItemId, content: newItemContent }];
+        setItems(newItems);
+
+        // Scroll to the bottom
+        containerRef.current.scrollTop = containerRef.current.scrollHeight;
+    };
+
+    useEffect(() => {
+        containerRef.current.scrollTop = containerRef.current.scrollHeight;
+    }, [items]);
+
     return (
         <div>
             <DragDropContext onDragEnd={onDragEnd}>
                 <Droppable droppableId="droppable">
                     {(provided) => (
-                        <div {...provided.droppableProps} ref={provided.innerRef}>
+                        <div
+                            {...provided.droppableProps}
+                            ref={(el) => {
+                                containerRef.current = el;
+                                provided.innerRef(el);
+                            }}
+                            style={{ maxHeight: '300px', overflowY: 'auto' }}
+                        >
                             {items.map((item, index) => (
                                 <Draggable key={item.id} draggableId={item.id} index={index}>
                                     {(provided) => (
@@ -50,7 +72,7 @@ const App = () => {
                                             {...provided.dragHandleProps}
                                         >
                                             <textarea
-                                                className="hover:text-white hover:bg-black px-6 h-12 font-semibold tracking-wider border-2 border-black bg-teal-400 text-black"
+                                                className="hover:text-white hover:bg-black px-6 h-12 uppercase font-semibold tracking-wider border-2 border-black bg-teal-400 text-black"
                                                 value={item.content}
                                                 onChange={(e) => {
                                                     const updatedItems = [...items];
@@ -67,9 +89,20 @@ const App = () => {
                     )}
                 </Droppable>
             </DragDropContext>
-            <button onClick={handlePrintItems} className="mt-4 bg-gray-300 hover:bg-gray-400 text-black font-bold py-2 px-4 rounded">
-                Print Items in New Order
-            </button>
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <button
+                    onClick={handlePrintItems}
+                    className="mt-4 bg-gray-300 hover:bg-gray-400 text-black font-bold py-2 px-4 rounded"
+                >
+                    Print Items in New Order
+                </button>
+                <button
+                    onClick={handleAddItem}
+                    className="mt-4 bg-blue-300 hover:bg-blue-400 text-black font-bold py-2 px-4 rounded"
+                >
+                    +
+                </button>
+            </div>
         </div>
     );
 };
