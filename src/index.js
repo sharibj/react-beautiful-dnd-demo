@@ -34,7 +34,8 @@ const App = () => {
 
     const handlePrintItems = () => {
         console.log('Items in new order:');
-        items.forEach((item) => console.log(item.content));
+        const mergedItems = items.map((item) => item.content).join('\n----\n');
+        console.log(mergedItems);
     };
 
     const handleAddItem = () => {
@@ -114,7 +115,7 @@ const App = () => {
                     onClick={handlePrintItems}
                     className="mt-4 bg-teal-400 hover:bg-black text-black  hover:text-white font-bold py-2 px-4 tracking-wider border-2 border-black "
                 >
-                    Print
+                    Upload
                 </button>
                 <button
                     onClick={handleAddItem}
