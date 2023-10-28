@@ -51,11 +51,12 @@ const App = () => {
     }, [items]);
 
     return (
-        <div>
+        <div className='grid grid-cols-1 grid-row-2 w-80'>
             <DragDropContext onDragEnd={onDragEnd}>
                 <Droppable droppableId="droppable">
                     {(provided) => (
                         <div
+                            className='grid grid-cols-1 gap-2 self-center justify-center w-80'
                             {...provided.droppableProps}
                             ref={(el) => {
                                 containerRef.current = el;
@@ -72,7 +73,7 @@ const App = () => {
                                             {...provided.dragHandleProps}
                                         >
                                             <textarea
-                                                className="hover:text-white hover:bg-black px-6 h-12 uppercase font-semibold tracking-wider border-2 border-black bg-teal-400 text-black"
+                                                className="hover:text-white hover:bg-black px-6 h-12 w-full font-semibold tracking-wider border-2 border-black bg-teal-400 text-black"
                                                 value={item.content}
                                                 onChange={(e) => {
                                                     const updatedItems = [...items];
@@ -89,16 +90,16 @@ const App = () => {
                     )}
                 </Droppable>
             </DragDropContext>
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <div className="grid grid-cols-2 grid-row-1 w-80 gap-4">
                 <button
                     onClick={handlePrintItems}
-                    className="mt-4 bg-gray-300 hover:bg-gray-400 text-black font-bold py-2 px-4 rounded"
+                    className="mt-4 bg-teal-400 hover:bg-black text-black  hover:text-white font-bold py-2 px-4 tracking-wider border-2 border-black "
                 >
-                    Print Items in New Order
+                    Print
                 </button>
                 <button
                     onClick={handleAddItem}
-                    className="mt-4 bg-blue-300 hover:bg-blue-400 text-black font-bold py-2 px-4 rounded"
+                    className="mt-4 bg-teal-400 hover:bg-black text-black hover:text-white font-bold py-2 px-4 tracking-wider border-2 border-black "
                 >
                     +
                 </button>
