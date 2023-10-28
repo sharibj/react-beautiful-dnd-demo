@@ -6,7 +6,13 @@ const initialItems = [
     { id: 'item-1', content: 'Item 1' },
     { id: 'item-2', content: 'Item 2' },
     { id: 'item-3', content: 'Item 3' },
-    { id: 'item-4', content: 'Item 4' }
+    { id: 'item-4', content: 'Item 4' },
+    { id: 'item-5', content: 'Item 5' },
+    { id: 'item-6', content: 'Item 6' },
+    { id: 'item-7', content: 'Item 7' },
+    { id: 'item-8', content: 'Item 8' },
+    { id: 'item-9', content: 'Item 9' },
+    { id: 'item-10', content: 'Item 10' },
 ];
 
 const App = () => {
@@ -23,6 +29,7 @@ const App = () => {
 
         setItems(reorderedItems);
     };
+
     const handlePrintItems = () => {
         console.log('Items in new order:');
         items.forEach((item) => console.log(item.content));
@@ -42,9 +49,15 @@ const App = () => {
                                             {...provided.draggableProps}
                                             {...provided.dragHandleProps}
                                         >
-                                            <div className="hover:text-white hover:bg-black px-6 h-12 uppercase font-semibold tracking-wider border-2 border-black bg-teal-400 text-black">
-                                                {item.content}
-                                            </div>
+                                            <textarea
+                                                className="hover:text-white hover:bg-black px-6 h-12 font-semibold tracking-wider border-2 border-black bg-teal-400 text-black"
+                                                value={item.content}
+                                                onChange={(e) => {
+                                                    const updatedItems = [...items];
+                                                    updatedItems[index].content = e.target.value;
+                                                    setItems(updatedItems);
+                                                }}
+                                            />
                                         </div>
                                     )}
                                 </Draggable>
