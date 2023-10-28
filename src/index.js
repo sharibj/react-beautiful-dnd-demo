@@ -17,6 +17,7 @@ const initialItems = [
 
 const App = () => {
     const [items, setItems] = useState(initialItems);
+    const [deletionIndex, setDeletionIndex] = useState(-1);
     const containerRef = useRef(null);
 
     const onDragEnd = (result) => {
@@ -50,6 +51,17 @@ const App = () => {
         containerRef.current.scrollTop = containerRef.current.scrollHeight;
     }, [items]);
 
+    const handleDelete = (index) => {
+        if (deletionIndex === index) {
+            const updatedItems = items.filter((_, i) => i !== index);
+            setItems(updatedItems);
+            setDeletionIndex(-1);
+        } else {
+            setDeletionIndex(index);
+        }
+    };
+
+
     return (
         <div className='grid grid-cols-1 grid-row-2 w-80'>
             <DragDropContext onDragEnd={onDragEnd}>
@@ -71,9 +83,16 @@ const App = () => {
                                             ref={provided.innerRef}
                                             {...provided.draggableProps}
                                             {...provided.dragHandleProps}
+                                            className="flex items-center bg-teal-100 mb-2 p-2 rounded-lg"
                                         >
+                                            <div
+                                                className={`mr-2 text-center self-center text-lg cursor-pointer ${deletionIndex === index ? 'text-red-500 text-xl font-bold' : 'text-black'
+                                                    }`}
+                                                onClick={() => handleDelete(index)}
+                                            >&#x2715;</div>
                                             <textarea
-                                                className="hover:text-white hover:bg-black px-6 h-12 w-full font-semibold tracking-wider border-2 border-black bg-teal-400 text-black"
+                                                className={`hover:text-white hover:bg-black px-6 h-12 w-full font-semibold tracking-wider border-2 bg-teal-400 ${deletionIndex === index ? 'border-red-500 text-red-500' : 'border-black text-black'
+                                                    }`}
                                                 value={item.content}
                                                 onChange={(e) => {
                                                     const updatedItems = [...items];
