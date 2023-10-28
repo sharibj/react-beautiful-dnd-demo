@@ -56,13 +56,13 @@ const App = () => {
                 <Droppable droppableId="droppable">
                     {(provided) => (
                         <div
-                            className='grid grid-cols-1 gap-2 self-center justify-center w-80'
+                            className='grid grid-cols-1 gap-2 self-center justify-center w-80 overflow-y-auto'
                             {...provided.droppableProps}
                             ref={(el) => {
                                 containerRef.current = el;
                                 provided.innerRef(el);
                             }}
-                            style={{ maxHeight: '300px', overflowY: 'auto' }}
+                            style={{ maxHeight: '300px' }}
                         >
                             {items.map((item, index) => (
                                 <Draggable key={item.id} draggableId={item.id} index={index}>
